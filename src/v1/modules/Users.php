@@ -8,7 +8,15 @@ $app->group('/users', function() use($app){
 	$container = $app->getContainer();
 	
 	$app->get('/self/', function(Request $request, Response $response, $args){
-		return $response->withJson(['is_ok' => true, 'data' => $request->getAttribute('userdata')], 200);
+		$data = $request->getAttribute('userdata');
+
+		$result = [
+			'nama_lengkap' => $data['nama_lengkap'],
+      'username' => $data['username'],
+      'email' => $data['email']
+		];
+
+		return $response->withJson(['is_ok' => true, 'data' => $result], 200);
 
 	})->add(new AuthMiddleware($container));
 });

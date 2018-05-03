@@ -14,7 +14,7 @@ class AuthMiddleware {
 
     if(!isset($token)) return $response->withJson(['is_ok' => false, 'error_message' => 'Missing token parameter.'], 401);
 
-    $sql = "SELECT user.nama_lengkap, user.username, user.email ";
+    $sql = "SELECT user.id, user.nama_lengkap, user.username, user.email ";
     $sql.= "FROM m_users user, api_users auth ";
     $sql.= "WHERE user.id = auth.id_user AND auth.user_token = '{$token}'";
 
@@ -26,6 +26,7 @@ class AuthMiddleware {
     {
       $userdata = $stmt->fetch();
       $data = [
+        'id' => $userdata['id'],
         'nama_lengkap' => $userdata['nama_lengkap'],
         'username' => $userdata['username'],
         'email' => $userdata['email'],
